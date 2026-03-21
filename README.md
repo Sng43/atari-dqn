@@ -17,7 +17,7 @@ In this group project implementing and training a Deep Q-Network agent to play t
 
 ---
 
-## Project Overview
+## Projects Overview
 
 This project trains a DQN (Deep Q-Network) reinforcement learning agent to play the Atari 2600 game **Breakout**. The agent learns through:
 
