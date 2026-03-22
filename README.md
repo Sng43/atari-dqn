@@ -239,13 +239,32 @@ Use Windows Game Bar (Win+G) or OBS Studio to record the play.py output window.
 
 ### Member 3: Hyperparameter Analysis & Presentation
 
-See `README_member3_section.md` for Member 3's detailed findings.
+I completed 10 hyperparameter experiments and compared best and final evaluation rewards across all runs.
+
+**Member 3 Key Findings**
+
+- Best overall configuration: exp10_combined (lr=5e-4, gamma=0.95, batch=32, epsilon_end=0.01, epsilon_decay=0.10)
+- Best evaluation reward: 24.6 (exp10_combined)
+- Final evaluation reward: 24.6 (exp10_combined)
+- Most unstable run: exp7_smaller_batch (best 14.2, final 7.8)
+
+**Interpretation**
+
+- Increasing learning rate and slightly lowering gamma in exp10 improved short-horizon learning in Breakout.
+- Very small batch size (16) in exp7 increased update noise and reduced consistency late in training.
+- Exploration-focused settings in exp8 (higher epsilon_end=0.05) and exp9 (slower decay=0.20) improved stability compared with exp7, but did not beat exp10.
+
+**Gameplay Check (exp10 model)**
+
+- Episode rewards: 11.0, 0.0, 0.0
+- Average gameplay reward: 3.67
+- Conclusion: offline evaluation was strong, but live gameplay was inconsistent and suggests more training or repeated evaluation is needed.
 
 **Summary**
 
 - 10 experiments completed
-- Best configuration identified
-- Trade-offs documented
+- Best configuration identified: exp10_combined
+- Trade-offs documented with quantitative evidence
 - Presentation ready for coach Q&A
 
 ---
