@@ -1,0 +1,15 @@
+row_type,experiment,learning_rate,gamma,batch_size,epsilon_start,epsilon_end,epsilon_decay,num_evals,best_eval_reward,final_eval_reward,episode,episode_total_reward,gameplay_average_reward,gameplay_highest_reward,gameplay_lowest_reward
+experiment,exp1_baseline,0.0001,0.99,32,1.0,0.01,0.1,15,15.0,12.2,,,,,
+experiment,exp2_lower_lr,5e-05,0.99,32,1.0,0.01,0.1,15,15.6,11.8,,,,,
+experiment,exp3_higher_lr,0.0002,0.99,32,1.0,0.01,0.1,15,17.8,9.0,,,,,
+experiment,exp4_lower_gamma,0.0001,0.95,32,1.0,0.01,0.1,15,18.0,16.0,,,,,
+experiment,exp5_much_lower_gamma,0.0001,0.9,32,1.0,0.01,0.1,15,17.6,16.6,,,,,
+experiment,exp6_larger_batch,0.0001,0.99,64,1.0,0.01,0.1,15,16.8,16.0,,,,,
+experiment,exp7_smaller_batch,0.0001,0.99,16,1.0,0.01,0.1,15,14.2,7.8,,,,,
+experiment,exp8_higher_epsilon_end,0.0001,0.99,32,1.0,0.05,0.1,15,18.4,18.4,,,,,
+experiment,exp9_slower_decay,0.0001,0.99,32,1.0,0.01,0.2,15,15.2,15.2,,,,,
+experiment,exp10_combined,0.0005,0.95,32,1.0,0.01,0.1,15,24.6,24.6,,,,,
+gameplay_episode,exp10_combined,,,,,,,,,,1,11.0,,,
+gameplay_episode,exp10_combined,,,,,,,,,,2,0.0,,,
+gameplay_episode,exp10_combined,,,,,,,,,,3,0.0,,,
+gameplay_summary,exp10_combined,,,,,,,,,,,,3.67,11.0,0.0

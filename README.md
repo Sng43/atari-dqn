@@ -220,17 +220,17 @@ Use Windows Game Bar (Win+G) or OBS Studio to record the play.py output window.
 
 **Gameplay Metrics**
 
-- Model evaluated: `best_model/best_model.zip`
-- Episodes run: 5
-- Average reward: TBD
-- Highest single episode reward: TBD
-- Lowest single episode reward: TBD
+- Model evaluated: `member3_runs/exp10_combined/final_model.zip`
+- Episodes run: 3
+- Average reward: 3.67
+- Highest single episode reward: 11.0
+- Lowest single episode reward: 0.0
 
 **Observed Behavior**
 
-- Agent performance description:
-- Notable patterns:
-- Comparison to baseline/untrained policy:
+- Agent performance description: The trained agent showed one strong episode but was inconsistent across the 3-episode run.
+- Notable patterns: Episode rewards were 11.0, 0.0, and 0.0, indicating unstable short-term performance.
+- Comparison to baseline/untrained policy: Performance was better than random in the best episode, but not consistently above baseline behavior yet.
 
 **Gameplay Video**
 
