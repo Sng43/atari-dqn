@@ -1,0 +1,9 @@
+{
+  "name": "exp10_combined",
+  "lr": 0.0005,
+  "gamma": 0.95,
+  "batch": 32,
+  "eps_start": 1.0,
+  "eps_end": 0.01,
+  "eps_decay": 0.1
+}
