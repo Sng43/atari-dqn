@@ -8,16 +8,16 @@ from stable_baselines3.common.env_util import make_atari_env
 from stable_baselines3.common.vec_env import VecFrameStack
 from stable_baselines3.common.callbacks import EvalCallback, CheckpointCallback, CallbackList
 
-# ── CHANGE THIS BLOCK PER EXPERIMENT ────────────────────────
-EXP_NAME          = "exp1_baseline"
-LEARNING_RATE     = 1e-4
+# ── BEST CONFIG (from exp10) ─────────────────────────────────
+EXP_NAME          = "exp10_best_config"
+LEARNING_RATE     = 0.0005
 GAMMA             = 0.99
 BATCH_SIZE        = 32
 BUFFER_SIZE       = 100_000
 EXPLORATION_FRAC  = 0.1
 EXPLORATION_INIT  = 1.0
 EXPLORATION_FINAL = 0.01
-TOTAL_STEPS       = 150_000
+TOTAL_STEPS       = 200_000
 # ─────────────────────────────────────────────────────────────
 
 ENV_ID     = "ALE/Breakout-v5"
@@ -73,6 +73,6 @@ model.learn(
 )
 
 model.save(f"{DRIVE_PATH}/final_model")
-print(f"✅ Done! Saved to {DRIVE_PATH}/final_model.zip")
+print(f"Done! Saved to {DRIVE_PATH}/final_model.zip")
 vec_env.close()
 eval_env.close()
