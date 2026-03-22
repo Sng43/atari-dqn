@@ -195,26 +195,26 @@ Use Windows Game Bar (Win+G) or OBS Studio to record the play.py output window.
 
 ### Member 1: Hyperparameter Experiments
 
-| Run |   LR | Gamma | Batch | ε Start | ε End | ε Decay | Best Eval Reward | Trend | Notes |
-| --- | ---: | ----: | ----: | ------: | ----: | ------: | ---------------: | ----- | ----- |
-| 1   | 1e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |       |       |
-| 2   | 5e-5 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |       |       |
-| 3   | 2e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |       |       |
-| 4   | 1e-4 |  0.95 |    32 |     1.0 |  0.01 |    0.10 |                  |       |       |
-| 5   | 1e-4 |  0.90 |    32 |     1.0 |  0.01 |    0.10 |                  |       |       |
-| 6   | 1e-4 |  0.99 |    64 |     1.0 |  0.01 |    0.10 |                  |       |       |
-| 7   | 1e-4 |  0.99 |    16 |     1.0 |  0.01 |    0.10 |                  |       |       |
-| 8   | 1e-4 |  0.99 |    32 |     1.0 |  0.05 |    0.10 |                  |       |       |
-| 9   | 1e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.20 |                  |       |       |
-| 10  | 5e-4 |  0.95 |    32 |     1.0 |  0.01 |    0.10 |                  |       |       |
+| Run |   LR | Gamma | Batch | ε Start | ε End | ε Decay | Best Eval Reward | Trend                | Notes                                                                                           |
+| --- | ---: | ----: | ----: | ------: | ----: | ------: | ---------------: | -------------------- | ----------------------------------------------------------------------------------------------- |
+| 1   | 1e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
+| 2   | 5e-5 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
+| 3   | 2e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
+| 4   | 1e-4 |  0.95 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
+| 5   | 1e-4 |  0.90 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
+| 6   | 1e-4 |  0.99 |    64 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
+| 7   | 1e-4 |  0.99 |    16 |     1.0 |  0.01 |    0.10 |             14.2 | Downward late        | Smaller batch reached early gains but dropped by the final evaluation (final mean 7.8).         |
+| 8   | 1e-4 |  0.99 |    32 |     1.0 |  0.05 |    0.10 |             18.4 | Improving/stable     | Higher epsilon_end kept exploration active longer and ended strong (final mean 18.4).           |
+| 9   | 1e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.20 |             15.2 | Gradual improvement  | Slower epsilon decay improved steadily and matched its best score at the end (final mean 15.2). |
+| 10  | 5e-4 |  0.95 |    32 |     1.0 |  0.01 |    0.10 |             24.6 | Strong upward/stable | Best-performing setup among runs 7-10; highest best and final mean reward (24.6).               |
 
-**Key Insights (Fill After Running Experiments)**
+**Key Insights (Runs 7-10)**
 
-- Best learning rate:
-- Best gamma:
-- Best batch size:
-- Exploration settings that worked well:
-- Hyperparameters that caused instability:
+- Best learning rate in this subset: 5e-4 (run 10).
+- Best gamma in this subset: 0.95 (run 10).
+- Best batch size in this subset: 32 (runs 8-10 outperformed run 7 with batch 16).
+- Exploration settings that worked well: higher epsilon_end (0.05) and slower decay (0.20) both improved stability compared with run 7.
+- Hyperparameters that caused instability: small batch size (16) showed late performance drop in run 7.
 
 ### Member 2: Evaluation Results
 
