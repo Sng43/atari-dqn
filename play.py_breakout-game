@@ -1,0 +1,317 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNLGJ/4tu+znS6kFR9LYvyY",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Sng43/atari-dqn/blob/play.py/play.py_breakout-game\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# Play.py Script (Breakout Game)"
+      ],
+      "metadata": {
+        "id": "pH7Gq7fU7ooe"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Defined the required libraries, set the saved DQN model path, specified the Atari environment, and prepared the evaluation settings needed to load the trained agent consistently."
+      ],
+      "metadata": {
+        "id": "c86WhoMGz1iS"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install -U gymnasium ale-py \"stable-baselines3[extra]\""
+      ],
+      "metadata": {
+        "collapsed": true,
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "eltMwf-03xqs",
+        "outputId": "f126090b-542b-408d-c944-49df2cce8154"
+      },
+      "execution_count": 40,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: gymnasium in /usr/local/lib/python3.12/dist-packages (1.2.3)\n",
+            "Requirement already satisfied: ale-py in /usr/local/lib/python3.12/dist-packages (0.11.2)\n",
+            "Requirement already satisfied: stable-baselines3[extra] in /usr/local/lib/python3.12/dist-packages (2.7.1)\n",
+            "Requirement already satisfied: numpy>=1.21.0 in /usr/local/lib/python3.12/dist-packages (from gymnasium) (2.0.2)\n",
+            "Requirement already satisfied: cloudpickle>=1.2.0 in /usr/local/lib/python3.12/dist-packages (from gymnasium) (3.1.2)\n",
+            "Requirement already satisfied: typing-extensions>=4.3.0 in /usr/local/lib/python3.12/dist-packages (from gymnasium) (4.15.0)\n",
+            "Requirement already satisfied: farama-notifications>=0.0.1 in /usr/local/lib/python3.12/dist-packages (from gymnasium) (0.0.4)\n",
+            "Requirement already satisfied: torch<3.0,>=2.3 in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (2.10.0+cpu)\n",
+            "Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (2.2.2)\n",
+            "Requirement already satisfied: matplotlib in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (3.10.0)\n",
+            "Requirement already satisfied: opencv-python in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (4.13.0.92)\n",
+            "Requirement already satisfied: pygame in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (2.6.1)\n",
+            "Requirement already satisfied: tensorboard>=2.9.1 in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (2.19.0)\n",
+            "Requirement already satisfied: psutil in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (5.9.5)\n",
+            "Requirement already satisfied: tqdm in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (4.67.3)\n",
+            "Requirement already satisfied: rich in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (13.9.4)\n",
+            "Requirement already satisfied: pillow in /usr/local/lib/python3.12/dist-packages (from stable-baselines3[extra]) (11.3.0)\n",
+            "Requirement already satisfied: absl-py>=0.4 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (1.4.0)\n",
+            "Requirement already satisfied: grpcio>=1.48.2 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (1.78.0)\n",
+            "Requirement already satisfied: markdown>=2.6.8 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (3.10.2)\n",
+            "Requirement already satisfied: packaging in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (26.0)\n",
+            "Requirement already satisfied: protobuf!=4.24.0,>=3.19.6 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (5.29.6)\n",
+            "Requirement already satisfied: setuptools>=41.0.0 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (75.2.0)\n",
+            "Requirement already satisfied: six>1.9 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (1.17.0)\n",
+            "Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (0.7.2)\n",
+            "Requirement already satisfied: werkzeug>=1.0.1 in /usr/local/lib/python3.12/dist-packages (from tensorboard>=2.9.1->stable-baselines3[extra]) (3.1.6)\n",
+            "Requirement already satisfied: filelock in /usr/local/lib/python3.12/dist-packages (from torch<3.0,>=2.3->stable-baselines3[extra]) (3.25.2)\n",
+            "Requirement already satisfied: sympy>=1.13.3 in /usr/local/lib/python3.12/dist-packages (from torch<3.0,>=2.3->stable-baselines3[extra]) (1.14.0)\n",
+            "Requirement already satisfied: networkx>=2.5.1 in /usr/local/lib/python3.12/dist-packages (from torch<3.0,>=2.3->stable-baselines3[extra]) (3.6.1)\n",
+            "Requirement already satisfied: jinja2 in /usr/local/lib/python3.12/dist-packages (from torch<3.0,>=2.3->stable-baselines3[extra]) (3.1.6)\n",
+            "Requirement already satisfied: fsspec>=0.8.5 in /usr/local/lib/python3.12/dist-packages (from torch<3.0,>=2.3->stable-baselines3[extra]) (2025.3.0)\n",
+            "Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib->stable-baselines3[extra]) (1.3.3)\n",
+            "Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib->stable-baselines3[extra]) (0.12.1)\n",
+            "Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib->stable-baselines3[extra]) (4.62.1)\n",
+            "Requirement already satisfied: kiwisolver>=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib->stable-baselines3[extra]) (1.5.0)\n",
+            "Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib->stable-baselines3[extra]) (3.3.2)\n",
+            "Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib->stable-baselines3[extra]) (2.9.0.post0)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas->stable-baselines3[extra]) (2025.2)\n",
+            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas->stable-baselines3[extra]) (2025.3)\n",
+            "Requirement already satisfied: markdown-it-py>=2.2.0 in /usr/local/lib/python3.12/dist-packages (from rich->stable-baselines3[extra]) (4.0.0)\n",
+            "Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /usr/local/lib/python3.12/dist-packages (from rich->stable-baselines3[extra]) (2.19.2)\n",
+            "Requirement already satisfied: mdurl~=0.1 in /usr/local/lib/python3.12/dist-packages (from markdown-it-py>=2.2.0->rich->stable-baselines3[extra]) (0.1.2)\n",
+            "Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.12/dist-packages (from sympy>=1.13.3->torch<3.0,>=2.3->stable-baselines3[extra]) (1.3.0)\n",
+            "Requirement already satisfied: markupsafe>=2.1.1 in /usr/local/lib/python3.12/dist-packages (from werkzeug>=1.0.1->tensorboard>=2.9.1->stable-baselines3[extra]) (3.0.3)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import gymnasium as gym\n",
+        "import os\n",
+        "import ale_py\n",
+        "\n",
+        "gym.register_envs(ale_py)\n",
+        "\n",
+        "print(\"ALE environments registered.\")"
+      ],
+      "metadata": {
+        "collapsed": true,
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ikFq5rrm4EoZ",
+        "outputId": "39c5bd17-03a3-4be9-c705-b5cad9ca74aa"
+      },
+      "execution_count": 41,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "ALE environments registered.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from stable_baselines3 import DQN\n",
+        "from stable_baselines3.common.env_util import make_atari_env\n",
+        "from stable_baselines3.common.vec_env import VecFrameStack\n"
+      ],
+      "metadata": {
+        "collapsed": true,
+        "id": "yfP6fz810KHF"
+      },
+      "execution_count": 42,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')\n",
+        "\n",
+        "if not os.path.exists(MODEL_PATH + \".zip\"):\n",
+        "    raise FileNotFoundError(\n",
+        "        f\"Model not found: {MODEL_PATH}.zip\\n\"\n",
+        "        \"Check the exact Google Drive folder and filename.\"\n",
+        "    )\n",
+        "\n",
+        "model = DQN.load(MODEL_PATH)\n",
+        "print(f\"Loaded model from {MODEL_PATH}.zip\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "collapsed": true,
+        "id": "mL_0x5Hj5i6_",
+        "outputId": "9a43466e-1c22-4473-86e1-647b6742db61"
+      },
+      "execution_count": 43,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount(\"/content/drive\", force_remount=True).\n",
+            "Loaded model from /content/drive/MyDrive/final_model.zip\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "MODEL_PATH = \"/content/drive/MyDrive/final_model\"\n",
+        "ENV_ID = \"ALE/Breakout-v5\"\n",
+        "N_EPISODES = 5\n",
+        "SEED = 42"
+      ],
+      "metadata": {
+        "id": "eEl5ed8p2YRe"
+      },
+      "execution_count": 44,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Created the Atari evaluation environment with human rendering and stacked four frames so the observation format matched the CNN-based DQN model used during training."
+      ],
+      "metadata": {
+        "id": "UWjDxdrW0sW1"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "env = make_atari_env(\n",
+        "    ENV_ID,\n",
+        "    n_envs=1,\n",
+        "    seed=SEED,\n",
+        "    env_kwargs={\"render_mode\": \"human\"}\n",
+        ")\n",
+        "\n",
+        "env = VecFrameStack(env, n_stack=4)"
+      ],
+      "metadata": {
+        "id": "6jpULsqa1TfG"
+      },
+      "execution_count": 45,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Loaded the trained DQN model into the prepared environment so the saved policy could be evaluated using the same observation structure from training."
+      ],
+      "metadata": {
+        "id": "5FR_L6dl4mnt"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "model = DQN.load(MODEL_PATH, env=env)\n",
+        "print(\"Model loaded successfully.\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GvoDhdGe4Khh",
+        "outputId": "cd37a279-80b9-49e5-ed25-8de48092c783"
+      },
+      "execution_count": 46,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Wrapping the env in a VecTransposeImage.\n",
+            "Model loaded successfully.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Ran several evaluation episodes using deterministic action selection, which serves as greedy policy execution in Stable-Baselines3, while displaying the game and printing total rewards."
+      ],
+      "metadata": {
+        "id": "AhWVSkoO7UqN"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for episode in range(N_EPISODES):\n",
+        "    obs = env.reset()\n",
+        "    done = [False]\n",
+        "    total_reward = 0\n",
+        "\n",
+        "    while not done[0]:\n",
+        "        action, _ = model.predict(obs, deterministic=True)\n",
+        "        obs, rewards, done, info = env.step(action)\n",
+        "        total_reward += rewards[0]\n",
+        "\n",
+        "    print(f\"Episode {episode + 1}: Total Reward = {total_reward}\")\n",
+        "\n",
+        "env.close()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "1vLYATRi4raD",
+        "outputId": "803447a4-cfdf-48f5-8718-5e58a4e35eca"
+      },
+      "execution_count": 47,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Episode 1: Total Reward = 7.0\n",
+            "Episode 2: Total Reward = 2.0\n",
+            "Episode 3: Total Reward = 0.0\n",
+            "Episode 4: Total Reward = 5.0\n",
+            "Episode 5: Total Reward = 4.0\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
