@@ -1,6 +1,6 @@
 # Formative 3: Deep Q-Learning (DQN) Agent for Atari Breakout
 
-In this group project implementing and training a Deep Q-Network agent to play the Atari game Breakout using Stable Baselines 3 and Gymnasium, with hyperparameter tuning and performance evaluation.
+This group project implements and trains a Deep Q-Network agent to play the Atari game Breakout using Stable Baselines 3 and Gymnasium, with hyperparameter tuning and performance evaluation.
 
 ---
 
@@ -17,7 +17,7 @@ In this group project implementing and training a Deep Q-Network agent to play t
 
 ---
 
-## Projects Overview
+## Project Overview
 
 This project trains a DQN (Deep Q-Network) reinforcement learning agent to play the Atari 2600 game **Breakout**. The agent learns through:
 
@@ -68,15 +68,14 @@ python -c "import gymnasium; import stable_baselines3; import ale_py; print('Set
 
 ```
 atari-dqn/
-├── train.py                          # Training script (Member 1)
-├── play.py                           # Evaluation/demo script (Member 2)
-├── member3_experiments_template.md   # Experiment tracking (Member 3)
-├── README_member3_section.md         # Member 3 results section (Member 3)
-├── dqn_model.zip                     # Trained model (Member 1)
-├── best_model/                       # Best checkpoint from training
-│   └── best_model.zip
-├── tb_logs/                          # TensorBoard logs (when training runs)
-└── README.md                         # This file
+├── train.py                                # Training script (Member 1)
+├── run_member3_experiments.py              # Member 3 experiment runner
+├── run_member3_experiments_resume.py       # Member 3 resume runner
+├── play_member3_best.py                    # Member 3 gameplay validation script
+├── member3_runs/                           # Experiment outputs (exp1 ... exp10)
+├── member3_metrics_1_to_10_with_gameplay.csv
+├── member3_presentation_qa_prep.txt
+└── README.md
 ```
 
 ---
@@ -178,6 +177,8 @@ Then open http://localhost:6006 in your browser.
 python play.py
 ```
 
+Note: this repository currently includes `play_member3_best.py` for member 3 gameplay validation.
+
 This will:
 
 - Load the best trained model
@@ -231,11 +232,6 @@ Use Windows Game Bar (Win+G) or OBS Studio to record the play.py output window.
 - Agent performance description: The trained agent showed one strong episode but was inconsistent across the 3-episode run.
 - Notable patterns: Episode rewards were 11.0, 0.0, and 0.0, indicating unstable short-term performance.
 - Comparison to baseline/untrained policy: Performance was better than random in the best episode, but not consistently above baseline behavior yet.
-
-**Gameplay Video**
-
-- Location/link: [Add video link or file path]
-- Duration: [Recording duration]
 
 ### Member 3: Hyperparameter Analysis & Presentation
 
@@ -391,4 +387,4 @@ FileNotFoundError: Model not found at path
 - **Member 3:** Experiment analysis & presentation
 
 Date: March 2026  
-Status: [In Progress]
+Status: [Member 3 Complete - Pending Team Merge and Final Submission]
