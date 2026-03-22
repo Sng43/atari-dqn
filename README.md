@@ -1,6 +1,6 @@
 # Formative 3: Deep Q-Learning (DQN) Agent for Atari Breakout
 
-In this group project implementing and training a Deep Q-Network agent to play the Atari game Breakout using Stable Baselines 3 and Gymnasium, with hyperparameter tuning and performance evaluation.
+This group project implements and trains a Deep Q-Network agent to play the Atari game Breakout using Stable Baselines 3 and Gymnasium, with hyperparameter tuning and performance evaluation.
 
 **Link to the contribution report:** https://docs.google.com/document/d/1Hyx6uKKqm5ECLB_atkWCsv9nfZSWwL8vcTDqsn12PnM/edit?usp=sharing
 
@@ -17,7 +17,7 @@ In this group project implementing and training a Deep Q-Network agent to play t
 
 ---
 
-## Projects Overview
+## Project Overview
 
 This project trains a DQN (Deep Q-Network) reinforcement learning agent to play the Atari 2600 game **Breakout**. The agent learns through:
 
@@ -68,15 +68,14 @@ python -c "import gymnasium; import stable_baselines3; import ale_py; print('Set
 
 ```
 atari-dqn/
-├── train.py                          # Training script (Member 1)
-├── play.py                           # Evaluation/demo script (Member 2)
-├── member3_experiments_template.md   # Experiment tracking (Member 3)
-├── README_member3_section.md         # Member 3 results section (Member 3)
-├── dqn_model.zip                     # Trained model (Member 1)
-├── best_model/                       # Best checkpoint from training
-│   └── best_model.zip
-├── tb_logs/                          # TensorBoard logs (when training runs)
-└── README.md                         # This file
+├── train.py                                # Training script (Member 1)
+├── run_member3_experiments.py              # Member 3 experiment runner
+├── run_member3_experiments_resume.py       # Member 3 resume runner
+├── play_member3_best.py                    # Member 3 gameplay validation script
+├── member3_runs/                           # Experiment outputs (exp1 ... exp10)
+├── member3_metrics_1_to_10_with_gameplay.csv
+├── member3_presentation_qa_prep.txt
+└── README.md
 ```
 
 ---
@@ -178,6 +177,8 @@ Then open http://localhost:6006 in your browser.
 python play.py
 ```
 
+Note: this repository currently includes `play_member3_best.py` for member 3 gameplay validation.
+
 This will:
 
 - Load the best trained model
@@ -220,32 +221,46 @@ Use Windows Game Bar (Win+G) or OBS Studio to record the play.py output window.
 
 **Gameplay Metrics**
 
-- Model evaluated: `best_model/best_model.zip`
-- Episodes run: 5
-- Average reward: TBD
-- Highest single episode reward: TBD
-- Lowest single episode reward: TBD
+- Model evaluated: `member3_runs/exp10_combined/final_model.zip`
+- Episodes run: 3
+- Average reward: 3.67
+- Highest single episode reward: 11.0
+- Lowest single episode reward: 0.0
 
 **Observed Behavior**
 
-- Agent performance description:
-- Notable patterns:
-- Comparison to baseline/untrained policy:
-
-**Gameplay Video**
-
-- Location/link: [Add video link or file path]
-- Duration: [Recording duration]
+- Agent performance description: The trained agent showed one strong episode but was inconsistent across the 3-episode run.
+- Notable patterns: Episode rewards were 11.0, 0.0, and 0.0, indicating unstable short-term performance.
+- Comparison to baseline/untrained policy: Performance was better than random in the best episode, but not consistently above baseline behavior yet.
 
 ### Member 3: Hyperparameter Analysis & Presentation
 
-See `README_member3_section.md` for Member 3's detailed findings.
+I completed 10 hyperparameter experiments and compared best and final evaluation rewards across all runs.
+
+**Member 3 Key Findings**
+
+- Best overall configuration: exp10_combined (lr=5e-4, gamma=0.95, batch=32, epsilon_end=0.01, epsilon_decay=0.10)
+- Best evaluation reward: 24.6 (exp10_combined)
+- Final evaluation reward: 24.6 (exp10_combined)
+- Most unstable run: exp7_smaller_batch (best 14.2, final 7.8)
+
+**Interpretation**
+
+- Increasing learning rate and slightly lowering gamma in exp10 improved short-horizon learning in Breakout.
+- Very small batch size (16) in exp7 increased update noise and reduced consistency late in training.
+- Exploration-focused settings in exp8 (higher epsilon_end=0.05) and exp9 (slower decay=0.20) improved stability compared with exp7, but did not beat exp10.
+
+**Gameplay Check (exp10 model)**
+
+- Episode rewards: 11.0, 0.0, 0.0
+- Average gameplay reward: 3.67
+- Conclusion: offline evaluation was strong, but live gameplay was inconsistent and suggests more training or repeated evaluation is needed.
 
 **Summary**
 
 - 10 experiments completed
-- Best configuration identified
-- Trade-offs documented
+- Best configuration identified: exp10_combined
+- Trade-offs documented with quantitative evidence
 - Presentation ready for coach Q&A
 
 ---
@@ -372,4 +387,4 @@ FileNotFoundError: Model not found at path
 - **Member 3:** Experiment analysis & presentation
 
 Date: March 2026  
-Status: [In Progress]
+Status: [Member 3 Complete - Pending Team Merge and Final Submission]
