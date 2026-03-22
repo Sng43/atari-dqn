@@ -105,8 +105,8 @@ ALL_EXPERIMENTS = [
     },
 ]
 
-# Resume from experiment 7 (index 6)
-EXPERIMENTS = ALL_EXPERIMENTS[6:]
+# Resume experiment 10 only (index 9)
+EXPERIMENTS = ALL_EXPERIMENTS[9:]
 
 ENV_ID = "ALE/Breakout-v5"
 TOTAL_STEPS = 150_000
@@ -184,10 +184,10 @@ def run_experiment(config):
 
 if __name__ == "__main__":
     print("\n" + "="*60)
-    print("RESUMING: Running experiments 7-10 only")
+    print("RESUMING: Running experiment 10 only")
     print("="*60)
     
-    for i, config in enumerate(EXPERIMENTS, 7):
+    for i, config in enumerate(EXPERIMENTS, 10):
         print(f"\n[{i}/10] Starting experiment...")
         try:
             run_experiment(config)
@@ -196,5 +196,5 @@ if __name__ == "__main__":
             continue
     
     print("\n" + "="*60)
-    print("RESUME EXPERIMENTS COMPLETED (7-10)")
+    print("RESUME EXPERIMENTS COMPLETED (10)")
     print("="*60)
