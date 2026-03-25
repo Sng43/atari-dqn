@@ -3,6 +3,7 @@
 This group project implements and trains a Deep Q-Network agent to play the Atari game Breakout using Stable Baselines 3 and Gymnasium, with hyperparameter tuning and performance evaluation.
 
 **Link to the contribution report:** https://docs.google.com/document/d/1Hyx6uKKqm5ECLB_atkWCsv9nfZSWwL8vcTDqsn12PnM/edit?usp=sharing
+**Link to the Task sheet:** https://docs.google.com/spreadsheets/d/1lFCKJWw1HQyxza-ob3xR4c4IGsy2V0Y3xdpgpmPt-wM/edit?usp=sharing
 
 ## Table of Contents
 
