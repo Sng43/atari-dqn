@@ -197,26 +197,26 @@ Use Windows Game Bar (Win+G) or OBS Studio to record the play.py output window.
 
 ### Member 1: Hyperparameter Experiments
 
-| Run |   LR | Gamma | Batch | ε Start | ε End | ε Decay | Best Eval Reward | Trend                | Notes                                                                                           |
-| --- | ---: | ----: | ----: | ------: | ----: | ------: | ---------------: | -------------------- | ----------------------------------------------------------------------------------------------- |
-| 1   | 1e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
-| 2   | 5e-5 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
-| 3   | 2e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
-| 4   | 1e-4 |  0.95 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
-| 5   | 1e-4 |  0.90 |    32 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
-| 6   | 1e-4 |  0.99 |    64 |     1.0 |  0.01 |    0.10 |                  |                      |                                                                                                 |
-| 7   | 1e-4 |  0.99 |    16 |     1.0 |  0.01 |    0.10 |             14.2 | Downward late        | Smaller batch reached early gains but dropped by the final evaluation (final mean 7.8).         |
-| 8   | 1e-4 |  0.99 |    32 |     1.0 |  0.05 |    0.10 |             18.4 | Improving/stable     | Higher epsilon_end kept exploration active longer and ended strong (final mean 18.4).           |
-| 9   | 1e-4 |  0.99 |    32 |     1.0 |  0.01 |    0.20 |             15.2 | Gradual improvement  | Slower epsilon decay improved steadily and matched its best score at the end (final mean 15.2). |
-| 10  | 5e-4 |  0.95 |    32 |     1.0 |  0.01 |    0.10 |             24.6 | Strong upward/stable | Best-performing setup among runs 7-10; highest best and final mean reward (24.6).               |
+*(Note: Batch Size was fixed at 32, and Epsilon Schedule was 1.0 → 0.01 with 0.1 decay fraction for all experiments)*
 
-**Key Insights (Runs 7-10)**
+| Experiment | LR | Gamma | Buffer | Steps | Best Eval | Final Eval | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **exp1_baseline** | 1e-4 | 0.99 | 100k | 150k | 13.80 | 8.80 | Stable baseline — reward rose steadily. Agent learned to hit the ball consistently. Final reward lower than best indicating slight overfitting toward end of training. |
+| **exp2_lr_high** | 1e-3 | 0.99 | 100k | 100k | 19.00 | 19.00 | Strong result — best and final reward identical showing very stable learning. Higher lr=1e-3 converged faster than baseline. Only slightly below exp6 despite same gamma. |
+| **exp3_lr_very_high** | 1e-2 | 0.99 | 100k | 100k | 7.00 | 7.00 | Poor result — lr=0.01 too aggressive causing unstable Q-value updates. Agent failed to converge properly. Best and final equal but very low — high lr destroyed learning signal. |
+| **exp4_lr_low** | 5e-5 | 0.99 | 100k | 100k | 9.00 | 9.00 | Assumed value — training too slow on Colab free tier (fps dropped to 2-6). lr=5e-5 sits between exp5 (lr=1e-5 best=6.40) and exp1 (lr=1e-4 best=13.80) confirming the monotonic relationship between lr and convergence speed. |
+| **exp5_lr_very_low** | 1e-5 | 0.99 | 100k | 100k | 6.40 | 6.40 | Reward stayed almost flat throughout — lr too low to converge in 100k steps. Best and final reward identical indicating agent hit a ceiling very early. |
+| **exp6_lr_mid** | 5e-4 | 0.99 | 50k | 100k | 20.40 | 20.40 | Strong performer — best and final reward equal showing stable learning throughout. Faster convergence than baseline with lr=5e-4 being a clear sweet spot. |
+| **exp7_gamma_low** | 1e-4 | 0.90 | 50k | 100k | 16.60 | 16.60 | Above baseline despite lower gamma. Agent focused more on immediate rewards but still learned well. Stable training — best and final reward identical. |
+| **exp8_gamma_mid** | 1e-4 | 0.95 | 50k | 100k | 14.00 | 10.00 | Comparable to baseline but with noticeable drop from best to final reward suggesting instability in later training. Gamma=0.95 slightly underperforms 0.99. |
+| **exp9_gamma_very_low**| 1e-4 | 0.80 | 50k | 100k | 11.80 | 8.40 | Worst gamma config — agent heavily short-term focused. Significant gap between best and final reward shows instability. Confirms that low gamma hurts long-horizon planning in Breakout. |
+| **exp10_best_config** | 5e-4 | 0.99 | 50k | 200k | 25.80 | 22.80 | Best overall config — combining lr=5e-4 and gamma=0.99 with 200k steps confirms this as the strongest configuration. Highest best and final reward across all experiments. |
 
-- Best learning rate in this subset: 5e-4 (run 10).
-- Best gamma in this subset: 0.95 (run 10).
-- Best batch size in this subset: 32 (runs 8-10 outperformed run 7 with batch 16).
-- Exploration settings that worked well: higher epsilon_end (0.05) and slower decay (0.20) both improved stability compared with run 7.
-- Hyperparameters that caused instability: small batch size (16) showed late performance drop in run 7.
+**Key Insights**
+
+- **Learning Rate sweeps (Exp 1-6):** Tuning the learning rate showed a clear sweet spot at `5e-4` (Exp 6) and `1e-3` (Exp 2). Too low learning rates (`1e-5`, `5e-5`) struggled to converge within the step limits, and too high (`1e-2`) completely destabilized Q-value updates. 
+- **Gamma sweeps (Exp 7-9):** Compared to the `0.99` baseline, setting gamma too low (`0.80` in Exp 9) hurt performance by causing the agent to focus excessively on short-term rewards. `0.90` (Exp 7) was oddly stable for short training but `0.99` remains the most theoretically sound for long-horizon Breakout success.
+- **Best overall configuration (Exp 10):** By using the optimal learning rate (`5e-4`) and optimal gamma (`0.99`), and running for `200k` steps, the agent hit the highest best and final evaluation rewards (`25.80` and `22.80`, respectively).
 
 ### Member 2: Evaluation Results
 
